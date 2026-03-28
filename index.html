@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luigi's Mansion: Endless Manor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Basic room generation
+        function createRoom() {
+            const geometry = new THREE.BoxGeometry(10, 10, 10);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            const room = new THREE.Mesh(geometry, material);
+            scene.add(room);
+        }
+
+        createRoom();
+
+        // First-person movement setup (basic, needs refinement)
+        let keys = {};
+        window.addEventListener('keydown', (e) => { keys[e.code] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.code] = false; });
+
+        function moveCamera() {
+            const speed = 0.1;
+            if (keys['KeyW']) camera.position.z -= speed;
+            if (keys['KeyS']) camera.position.z += speed;
+            if (keys['KeyA']) camera.position.x -= speed;
+            if (keys['KeyD']) camera.position.x += speed;
+        }
+
+        camera.position.z = 5;
+
+        // Game loop
+        function animate() {
+            requestAnimationFrame(animate);
+            moveCamera();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
